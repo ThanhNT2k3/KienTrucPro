@@ -11,7 +11,8 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     define: {
       // This ensures process.env.API_KEY works in the browser after build
-      'process.env.API_KEY': JSON.stringify(env.API_KEY)
+      // We check both env.API_KEY (from loadEnv) and process.env.API_KEY (system env)
+      'process.env.API_KEY': JSON.stringify(env.API_KEY || process.env.API_KEY)
     }
   }
 })

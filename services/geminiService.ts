@@ -1,13 +1,20 @@
 import { GoogleGenAI } from "@google/genai";
 
-// Initialize the client with the API key from the environment
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
 /**
  * Sends a user query to the Gemini model acting as a construction consultant.
  */
 export const askConstructionConsultant = async (userMessage: string): Promise<string> => {
   try {
+    // Access the API key inside the function to avoid top-level initialization errors
+    const apiKey = process.env.API_KEY;
+    
+    if (!apiKey) {
+      console.error("API Key is missing. Please ensure API_KEY is set in your environment variables.");
+      return "I apologize, I am not correctly configured at the moment. Please contact the administrator.";
+    }
+
+    // Initialize the client on demand
+    const ai = new GoogleGenAI({ apiKey: apiKey });
     const model = "gemini-2.5-flash";
     
     const systemInstruction = `You are an expert construction consultant and architect for a company called 'KienTrucPro'. 
